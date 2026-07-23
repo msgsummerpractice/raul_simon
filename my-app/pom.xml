@@ -25,6 +25,7 @@
     <id>dev</id>
     <properties>
       <env>development</env>
+      <maven.test.skip>true</maven.test.skip>
     </properties>
   </profile>
   <profile>

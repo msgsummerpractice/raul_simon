@@ -1,4 +1,4 @@
-package com.example.ModuleAAppTest;
+package com.example.ModuleBApp;
 
 import junit.framework.Test;
 import junit.framework.TestCase;

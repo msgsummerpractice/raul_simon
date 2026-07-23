@@ -26,6 +26,7 @@
       </activation>
       <properties>
         <env>development</env>
+        <!-- added to observe the difference between profiles -->
         <maven.test.skip>true</maven.test.skip>
       </properties>
     </profile>

@@ -1,4 +1,4 @@
-package com;
+package com.example.ModuleBApp;
 
 /**
  * Hello world!

@@ -3,10 +3,11 @@ package com.example;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-// @Configuration
-public class HelloJava {
-    // @Bean
-    public String display() {
-        return "Hello, Spring!";
+@Configuration
+public class HelloConfig {
+
+    @Bean
+    public HelloJava myHelloJava() {
+        return new HelloJava();
     }
 }

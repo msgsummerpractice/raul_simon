@@ -1,7 +1,1 @@
-my-app/target
-
-my-app/module-a/target
-
-my-app/module-b/target
-
-spring_core/spring_core-app/target
+target/

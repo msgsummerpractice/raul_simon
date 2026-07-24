@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -23,7 +24,12 @@ public class UserController {
         logger.info("UserController initialized");
     }
 
-    @GetMapping
+    @GetMapping("/add")
+    public void addUser(@RequestParam String name, @RequestParam int age, @RequestParam String email) {
+        userService.addUser(name, age, email);
+    }
+
+    @GetMapping("/list")
     public List<User> getAllUsers() {
         logger.info("getAllUsers endpoint called");
         return userService.getUsers();

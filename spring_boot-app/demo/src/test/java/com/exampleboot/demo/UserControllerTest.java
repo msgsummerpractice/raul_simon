@@ -16,8 +16,6 @@ public class UserControllerTest {
     
     @Autowired
 	private MockMvc mockMvc;
-
-    
     
     @Test
     void testAddUser() throws Exception {
@@ -39,4 +37,22 @@ public class UserControllerTest {
                 .andExpect(jsonPath("$[1].name").value("Bob"))
                 .andExpect(jsonPath("$[2].name").value("John Doe"));
 	}
+
+    @Test
+    public void testWhenValidParams_thenReturns200() throws Exception {
+        mockMvc.perform(get("/users/add")
+                .param("name", "Jane Doe")
+                .param("age", "28")
+                .param("email", "jane.doe@example.com"))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    public void testWhenInvalidEmail_thenReturns400() throws Exception {    
+        mockMvc.perform(get("/users/add")
+                .param("name", "Invalid Email User")
+                .param("age", "30")
+                .param("email", "invalid-email"))
+                .andExpect(status().isBadRequest());
+    }
 }

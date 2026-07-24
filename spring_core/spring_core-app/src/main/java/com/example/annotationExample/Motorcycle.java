@@ -2,7 +2,7 @@ package com.example.annotationExample;
 
 import org.springframework.stereotype.Component;
 
-@Component
+@Component("superMotorcycle")
 public class Motorcycle implements Vehicle {
     @Override
     public void drive() {

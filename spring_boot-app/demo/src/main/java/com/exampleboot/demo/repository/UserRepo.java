@@ -29,6 +29,8 @@ public class UserRepo {
 
     public void addUser(User user) {
         users.add(user);
+        logger.info("User created: " + user.getName() + ", " + user.getAge() + ", " + user.getEmail());
+
     }
 
     public List<User> getUsers() {

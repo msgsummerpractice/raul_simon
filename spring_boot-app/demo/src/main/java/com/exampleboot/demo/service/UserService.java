@@ -20,9 +20,10 @@ public class UserService {
         logger.info("UserService initialized");
     }
 
-    public void addUser(String name, int age, String email) {
+    public User addUser(String name, int age, String email) {
         User user = new User(name, age, email);
         userRepo.addUser(user);
+        return user;
     }
 
     public List<User> getUsers() {

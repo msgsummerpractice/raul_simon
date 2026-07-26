@@ -49,4 +49,11 @@ public class UserService {
         return userRepository.findByEmail(email);
     }
 
+    public List<User> getUsersByUsername() {
+        return userRepository.findTop10ByUsernameOrderByUsernameAsc();
+    }
+
+    public Long countUsers() {
+        return userRepository.countUsers();
+    }
 }

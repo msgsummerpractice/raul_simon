@@ -9,8 +9,12 @@ import java.util.List;
 @Service
 public class UserService {
     
+    private final UserRepository userRepository;
+
     @Autowired
-    private UserRepository userRepository;
+    public UserService(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
 
     public User createUser(User user) {
         return userRepository.save(user);
@@ -18,23 +22,26 @@ public class UserService {
 
     public User updateUser(Long id, User user) {
         User existingUser = userRepository.findById(id).orElse(null);
+
         if (existingUser != null) {
             existingUser.setUsername(user.getUsername());
             existingUser.setEmail(user.getEmail());
             existingUser.setPassword(user.getPassword());
             existingUser.setFirstname(user.getFirstname());
             existingUser.setLastname(user.getLastname());
-        }
 
-        return userRepository.save(existingUser);
+            return userRepository.save(existingUser);
+        }
+        return null;
     }
 
-    public User deleteUser(Long id) {
+    public boolean deleteUser(Long id) {
         User existingUser = userRepository.findById(id).orElse(null);
         if (existingUser != null) {
             userRepository.delete(existingUser);
+            return true;
         }
-        return existingUser;
+        return false;
     }
 
     public List<User> getAllUsers() {

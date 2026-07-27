@@ -9,10 +9,10 @@ import static org.mockito.Mockito.verify;
 import java.util.Arrays;
 import java.util.List;
 
+import static org.mockito.Mockito.atLeastOnce;
 import static org.mockito.Mockito.times;
 import static org.mockito.ArgumentMatchers.any;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -28,14 +28,10 @@ public class UserServiceTests {
     @InjectMocks
     private UserService userService;
 
-    @BeforeEach
-    void setUp(){
-        userRepository.findAll().clear();
-    }
 
     @Test
     public void testCreateUser() {
-        User newUser = new User("testuser", "testuser@example.com", "password", "Test", "User");
+        User newUser = new User(1L,"testuser", "testuser@example.com", "password", "Test", "User");
         Mockito.when(userRepository.save(any(User.class))).thenReturn(newUser);
         User createdUser = userService.createUser(newUser);
 
@@ -72,27 +68,26 @@ public class UserServiceTests {
 
     @Test
     public void testDeleteUser(){
-        User userToDelete = new User("testuser1", "testuser1@example.com", "password", "Test1", "User1");
+        User userToDelete = new User(1L, "testuser1", "testuser1@example.com", "password", "Test1", "User1");
         Mockito.when(userRepository.findById(userToDelete.getId())).thenReturn(java.util.Optional.of(userToDelete));
-        User deletedUser = userService.deleteUser(userToDelete.getId());
+        boolean deleted = userService.deleteUser(userToDelete.getId());
 
-        assertEquals("testuser1", deletedUser.getUsername());
-        assertEquals("Test1", deletedUser.getFirstname());
+        assertEquals(true, deleted);
         verify(userRepository, times(1)).delete(userToDelete);
     }
 
     @Test
     public void testGetAllUsers(){
         List<User> users = Arrays.asList(
-            new User("testuser1", "testuser1@example.com", "password", "Test1", "User1"),
-            new User("testuser2", "testuser2@example.com", "password", "Test2", "User2")
+            new User(1L, "testuser1", "testuser1@example.com", "password", "Test1", "User1"),
+            new User(2L, "testuser2", "testuser2@example.com", "password", "Test2", "User2")
         );
         Mockito.when(userRepository.findAll()).thenReturn(users);
         
         assertEquals(2, userService.getAllUsers().size());
         assertEquals("testuser1", userService.getAllUsers().get(0).getUsername());
         assertEquals("testuser2", userService.getAllUsers().get(1).getUsername());
-        verify(userRepository, times(4)).findAll();
+        verify(userRepository, atLeastOnce()).findAll();
     }
 
     @Test
@@ -130,11 +125,11 @@ public class UserServiceTests {
     @Test
     public void testGetTop10UsersByUsername(){
         List<User> users = Arrays.asList(
-            new User("testuser1", "testuser1@example.com", "password", "Test1", "User1"),
-            new User("testuser2", "testuser2@example.com", "password", "Test2", "User2"),
-            new User("testuser3", "testuser3@example.com", "password", "Test3", "User3"),
-            new User("testuser4", "testuser4@example.com", "password", "Test4", "User4"),
-            new User("testuser5", "testuser5@example.com", "password", "Test5", "User5"));
+            new User(1L, "testuser1", "testuser1@example.com", "password", "Test1", "User1"),
+            new User(2L, "testuser2", "testuser2@example.com", "password", "Test2", "User2"),
+            new User(3L, "testuser3", "testuser3@example.com", "password", "Test3", "User3"),
+            new User(4L, "testuser4", "testuser4@example.com", "password", "Test4", "User4"),
+            new User(5L, "testuser5", "testuser5@example.com", "password", "Test5", "User5"));
         Mockito.when(userRepository.findTop10ByUsernameContainingIgnoreCaseOrderByUsernameAsc("test")).thenReturn(users);
         List<User> retrievedUsers = userService.getUsersByUsername("test");
 

@@ -31,8 +31,6 @@ public class UserServiceTests {
     @BeforeEach
     void setUp(){
         userRepository.findAll().clear();
-        // userService.createUser(new User("testuser1", "testuser1@example.com", "password", "Test1", "User1"));
-        // userService.createUser(new User("testuser2", "testuser2@example.com", "password", "Test2", "User2"));
     }
 
     @Test
@@ -127,5 +125,32 @@ public class UserServiceTests {
         assertEquals("testuser1@example.com", retrievedUser.getEmail());
         assertEquals(retrievedUser.getId(), userId);
         verify(userRepository).findByEmail("testuser1@example.com");
+    }
+
+    @Test
+    public void testGetTop10UsersByUsername(){
+        List<User> users = Arrays.asList(
+            new User("testuser1", "testuser1@example.com", "password", "Test1", "User1"),
+            new User("testuser2", "testuser2@example.com", "password", "Test2", "User2"),
+            new User("testuser3", "testuser3@example.com", "password", "Test3", "User3"),
+            new User("testuser4", "testuser4@example.com", "password", "Test4", "User4"),
+            new User("testuser5", "testuser5@example.com", "password", "Test5", "User5"));
+        Mockito.when(userRepository.findTop10ByUsernameContainingIgnoreCaseOrderByUsernameAsc("test")).thenReturn(users);
+        List<User> retrievedUsers = userService.getUsersByUsername("test");
+
+        assertEquals(5, retrievedUsers.size());
+        assertEquals("testuser1", retrievedUsers.get(0).getUsername());
+        assertEquals("testuser5", retrievedUsers.get(4).getUsername());
+        verify(userRepository).findTop10ByUsernameContainingIgnoreCaseOrderByUsernameAsc("test");
+    }
+
+    @Test
+    public void testCountUsers(){
+        Long count = 5L;
+        Mockito.when(userRepository.countUsers()).thenReturn(count);
+        Long userCount = userService.countUsers();
+
+        assertEquals(count, userCount);
+        verify(userRepository).countUsers();
     }
 }

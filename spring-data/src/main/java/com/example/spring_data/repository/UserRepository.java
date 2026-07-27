@@ -12,6 +12,8 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     User findByEmail(String email);
 
+    User findById(long id);
+
     List<User> findTop10ByUsernameContainingIgnoreCaseOrderByUsernameAsc(String username);
 
     @Query("SELECT COUNT(u) FROM User u")

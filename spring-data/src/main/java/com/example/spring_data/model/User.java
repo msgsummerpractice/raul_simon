@@ -14,7 +14,7 @@ import lombok.ToString;
 
 @Entity
 @Getter @Setter @NoArgsConstructor @AllArgsConstructor @ToString
-@Table(name = "Users")
+@Table(name = "users")
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,7 +29,7 @@ public class User {
     private String email;
 
     @ToString.Exclude
-    @Column(name = "password", nullable = false, unique = true)
+    @Column(name = "password", nullable = false)
     private String password;
 
     @Column(name = "firstname")

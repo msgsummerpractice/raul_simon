@@ -28,7 +28,7 @@ public class UserService {
 
     public List<User> getUsers() {
         List<User> users = userRepo.getUsers();
-        logger.info("Retrieved users: " + users.size());
+        logger.info("Retrieved users: {}", users.size());
         return users;
     }
     

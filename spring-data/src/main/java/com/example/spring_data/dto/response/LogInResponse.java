@@ -1,15 +1,16 @@
 package com.example.spring_data.dto.response;
 
-import java.util.Set;
+import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+@Getter @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Getter @Setter
-public class SignInResponse {
-    private String accessToken;
-    private Set<String> roles;
+public class LogInResponse {
+
+    @NotBlank(message = "Message is required")
+    private String message;
 }

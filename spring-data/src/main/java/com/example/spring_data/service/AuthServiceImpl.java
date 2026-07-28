@@ -1,13 +1,21 @@
 package com.example.spring_data.service;
 
+import java.util.Random;
+import java.util.stream.Collectors;
+
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
+import com.example.spring_data.dto.request.MfaAuthenticationRequest;
 import com.example.spring_data.dto.request.SignInRequest;
+import com.example.spring_data.dto.response.LogInResponse;
+import com.example.spring_data.dto.response.SignInResponse;
 import com.example.spring_data.security.JwtTokenProvider;
+import com.example.spring_data.security.UserDetailsServiceImpl;
 
 @Service
 public class AuthServiceImpl implements AuthService {
@@ -16,25 +24,68 @@ public class AuthServiceImpl implements AuthService {
 
     private final JwtTokenProvider jwtTokenProvider;
 
-    public AuthServiceImpl(AuthenticationManager authenticationManager, JwtTokenProvider jwtTokenProvider) {
+    private final UserService userService;
+
+    private final UserDetailsServiceImpl userDetailsService;
+
+    public AuthServiceImpl(AuthenticationManager authenticationManager, JwtTokenProvider jwtTokenProvider, UserService userService, UserDetailsServiceImpl userDetailsService) {
         this.authenticationManager = authenticationManager;
         this.jwtTokenProvider = jwtTokenProvider;
+        this.userService = userService;
+        this.userDetailsService = userDetailsService;
     }
 
     @Override
-    public String login(SignInRequest signInRequest) {
-        Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(
-                        signInRequest.getUsername(),
-                        signInRequest.getPassword()
-                )
+    public LogInResponse login(SignInRequest signInRequest) {
+        authenticationManager.authenticate(
+            new UsernamePasswordAuthenticationToken(
+                    signInRequest.getUsername(),
+                    signInRequest.getPassword()
+            )
+        );
+
+        // SecurityContextHolder.getContext().setAuthentication(authentication);
+
+        // String token = jwtTokenProvider.generateToken(authentication);
+        // SignInResponse response = new SignInResponse();
+        // response.setAccessToken(token);
+        // response.setRoles(authentication.getAuthorities().stream()
+        //         .map(authority -> authority.getAuthority())
+        //         .collect(Collectors.toSet()));
+
+        String optCode = String.format("%06d", new Random().nextInt(999999));
+
+        userService.saveUserMfaCode(signInRequest.getUsername(), optCode);
+
+        System.out.println("Generated OTP Code for user " + signInRequest.getUsername() + ": " + optCode);
+
+        return new LogInResponse("MFA code sent to user " + signInRequest.getUsername() + ". Please check the console for the code.");
+    }
+
+    public SignInResponse authenticateMfa(MfaAuthenticationRequest mfaRequest){
+        boolean isMfaValid = userService.validateAndClearMfaCode(mfaRequest.getUsername(), mfaRequest.getMfaCode());
+        if (!isMfaValid) {
+            throw new RuntimeException("Invalid or expired MFA code");
+        }
+
+        UserDetails userDetails = userDetailsService.loadUserByUsername(mfaRequest.getUsername());
+
+        Authentication authentication = new UsernamePasswordAuthenticationToken(
+                userDetails,
+                null,
+                userDetails.getAuthorities()
         );
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
         String token = jwtTokenProvider.generateToken(authentication);
-        
-        return token;
+        SignInResponse response = new SignInResponse();
+        response.setAccessToken(token);
+        response.setRoles(userDetails.getAuthorities().stream()
+                .map(authority -> authority.getAuthority())
+                .collect(Collectors.toSet()));
+
+        return response;
     }
 
 }

@@ -26,10 +26,11 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
         CustomUserDetails customUserDetails = new CustomUserDetails(user);
 
-        return new org.springframework.security.core.userdetails.User(
-                customUserDetails.getUsername(),
-                customUserDetails.getPassword(),
-                customUserDetails.getAuthorities()
-        );
+        return customUserDetails;
+        // new org.springframework.security.core.userdetails.User(
+        //         customUserDetails.getUsername(),
+        //         customUserDetails.getPassword(),
+        //         customUserDetails.getAuthorities()
+        // );
     }
 }

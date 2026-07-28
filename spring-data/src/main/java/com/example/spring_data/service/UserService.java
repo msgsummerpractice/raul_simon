@@ -4,6 +4,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import com.example.spring_data.repository.UserRepository;
 import com.example.spring_data.dto.request.UpdateUserRequest;
@@ -29,6 +30,12 @@ public class UserService {
         ModelMapper modelMapper = new ModelMapper();
 
         User user = modelMapper.map(userRequest, User.class);
+
+        String password = user.getPassword();
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        String encodedPassword = passwordEncoder.encode(password);
+        user.setPassword(encodedPassword);
+        
         User savedUser = userRepository.save(user);
 
         UserResponse userResponse = modelMapper.map(savedUser, UserResponse.class);
@@ -134,5 +141,27 @@ public class UserService {
 
     public Long countUsers() {
         return userRepository.countUsers();
+    }
+
+    public void saveUserMfaCode(String username, String mfaCode) {
+        User user = userRepository.findByUsername(username);
+        if (user == null) {
+            throw new ResourceNotFoundException("User with username " + username + " not found.");
+        }
+        user.setMfaCode(mfaCode);
+        userRepository.save(user);
+    }
+
+    public boolean validateAndClearMfaCode(String username, String mfaCode) {
+        User user = userRepository.findByUsername(username);
+        if (user == null) {
+            throw new ResourceNotFoundException("User with username " + username + " not found.");
+        }
+        if (!mfaCode.equals(user.getMfaCode())) {
+            throw new InvalidParameterException("Invalid MFA code.");
+        }
+        user.setMfaCode(null);
+        userRepository.save(user);
+        return true;
     }
 }

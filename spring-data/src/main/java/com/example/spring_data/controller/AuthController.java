@@ -4,7 +4,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestBody;
+
+import com.example.spring_data.dto.request.MfaAuthenticationRequest;
 import com.example.spring_data.dto.request.SignInRequest;
+import com.example.spring_data.dto.response.LogInResponse;
 import com.example.spring_data.dto.response.SignInResponse;
 import com.example.spring_data.service.AuthService;
 
@@ -18,11 +21,15 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<SignInResponse> login(@RequestBody SignInRequest signInRequest) {
-        String accessToken = authService.login(signInRequest);
+    public ResponseEntity<LogInResponse> login(@RequestBody SignInRequest signInRequest) {
+        LogInResponse response = authService.login(signInRequest);
 
-        SignInResponse response = new SignInResponse();
-        response.setAccessToken(accessToken);
+        return ResponseEntity.ok(response);
+    }
+
+    @PostMapping("/mfa")
+    public ResponseEntity<SignInResponse> authenticateMfa(@RequestBody MfaAuthenticationRequest mfaRequest) {
+        SignInResponse response = authService.authenticateMfa(mfaRequest);
 
         return ResponseEntity.ok(response);
     }

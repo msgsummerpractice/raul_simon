@@ -2,6 +2,8 @@ package com.example.spring_data.model;
 
 import java.util.Set;
 
+import org.apache.commons.lang3.builder.ToStringExclude;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -52,4 +54,17 @@ public class User {
             inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id")
     )
     private Set<Role> roles;
+
+    @ToStringExclude
+    @Column(name = "mfacode")
+    private String mfaCode;
+
+    public User(Long id, String username, String email, String password, String firstname, String lastname) {
+        this.id = id;
+        this.username = username;
+        this.email = email;
+        this.password = password;
+        this.firstname = firstname;
+        this.lastname = lastname;
+    }
 }

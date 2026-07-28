@@ -35,7 +35,7 @@ public class UserServiceTests {
 
     @Test
     public void testCreateUser() {
-        User newUser = new User(1L,"testuser", "testuser@example.com", "password", "Test", "User");
+        User newUser = new User(1L,"testuser", "testuser@example.com", "password", "Test", "User", null);
         UserRequest userRequest = modelMapper.map(newUser, UserRequest.class);
         Mockito.when(userRepository.save(any(User.class))).thenReturn(newUser);
         UserResponse createdUser = userService.createUser(userRequest);
@@ -75,7 +75,7 @@ public class UserServiceTests {
 
     @Test
     public void testDeleteUser(){
-        User userToDelete = new User(1L, "testuser1", "testuser1@example.com", "password", "Test1", "User1");
+        User userToDelete = new User(1L, "testuser1", "testuser1@example.com", "password", "Test1", "User1", null);
         Mockito.when(userRepository.findById(userToDelete.getId())).thenReturn(java.util.Optional.of(userToDelete));
         boolean deleted = userService.deleteUser(userToDelete.getId());
 
@@ -86,8 +86,8 @@ public class UserServiceTests {
     @Test
     public void testGetAllUsers(){
         List<User> users = Arrays.asList(
-            new User(1L, "testuser1", "testuser1@example.com", "password", "Test1", "User1"),
-            new User(2L, "testuser2", "testuser2@example.com", "password", "Test2", "User2")
+            new User(1L, "testuser1", "testuser1@example.com", "password", "Test1", "User1", null),
+            new User(2L, "testuser2", "testuser2@example.com", "password", "Test2", "User2", null)
         );
         Mockito.when(userRepository.findAll()).thenReturn(users);
         
@@ -132,11 +132,12 @@ public class UserServiceTests {
     @Test
     public void testGetTop10UsersByUsername(){
         List<User> users = Arrays.asList(
-            new User(1L, "testuser1", "testuser1@example.com", "password", "Test1", "User1"),
-            new User(2L, "testuser2", "testuser2@example.com", "password", "Test2", "User2"),
-            new User(3L, "testuser3", "testuser3@example.com", "password", "Test3", "User3"),
-            new User(4L, "testuser4", "testuser4@example.com", "password", "Test4", "User4"),
-            new User(5L, "testuser5", "testuser5@example.com", "password", "Test5", "User5"));
+            new User(1L, "testuser1", "testuser1@example.com", "password", "Test1", "User1", null),
+            new User(2L, "testuser2", "testuser2@example.com", "password", "Test2", "User2", null),
+            new User(3L, "testuser3", "testuser3@example.com", "password", "Test3", "User3", null),
+            new User(4L, "testuser4", "testuser4@example.com", "password", "Test4", "User4", null),
+            new User(5L, "testuser5", "testuser5@example.com", "password", "Test5", "User5", null)
+        );
         Mockito.when(userRepository.findTop10ByUsernameContainingIgnoreCaseOrderByUsernameAsc("test")).thenReturn(users);
         List<User> retrievedUsers = userService.getUsersByUsername("test");
 

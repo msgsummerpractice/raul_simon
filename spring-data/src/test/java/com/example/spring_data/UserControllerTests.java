@@ -119,7 +119,7 @@ public class UserControllerTests {
 
     @Test
     public void testDeleteUser() throws Exception {
-        when(userService.deleteUser(any(Long.class))).thenReturn(userResponse);
+        when(userService.deleteUser(any(Long.class))).thenReturn(true);
         mockMvc.perform(delete("/api/users/delete/1"))
                 .andExpect(status().isNoContent());
         verify(userService, times(1)).deleteUser(any(Long.class));
@@ -127,7 +127,7 @@ public class UserControllerTests {
 
     @Test
     public void testDeleteUserNotFound() throws Exception {
-        when(userService.deleteUser(any(Long.class))).thenReturn(null);
+        when(userService.deleteUser(any(Long.class))).thenReturn(false);
         mockMvc.perform(delete("/api/users/delete/5"))
                 .andExpect(status().isNotFound());
     }

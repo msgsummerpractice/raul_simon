@@ -20,6 +20,8 @@ import java.util.List;
 import com.example.spring_data.dto.request.UpdateUserRequest;
 import com.example.spring_data.dto.request.UserRequest;
 import com.example.spring_data.dto.response.UserResponse;
+import com.example.spring_data.excetion.InvalidParameterException;
+import com.example.spring_data.excetion.ResourceNotFoundException;
 import com.example.spring_data.model.User;
 import com.example.spring_data.service.UserService;
 
@@ -78,32 +80,52 @@ public class UserController {
 
     @PutMapping("/update/{id}")
     public ResponseEntity<UserResponse> updateUser(@Valid @RequestBody UserRequest userRequest, @Min(1) @PathVariable Long id) {
-        UserResponse updatedUser = userService.updateUser(id, userRequest);
-        if (updatedUser != null) {
-            return ResponseEntity.ok(updatedUser);
-        } else {
+        try{
+            UserResponse updatedUser = userService.updateUser(id, userRequest);
+            if (updatedUser != null) {
+                return ResponseEntity.ok(updatedUser);
+            } else {
+                return ResponseEntity.notFound().build();
+            }
+        }
+        catch (ResourceNotFoundException e) {
             return ResponseEntity.notFound().build();
+        }
+        catch (InvalidParameterException e) {
+            return ResponseEntity.badRequest().build();
         }
     }
 
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<UserResponse> deleteUser(@Min(1) @PathVariable Long id) {
-        UserResponse deletedUser = userService.deleteUser(id);
-        if (deletedUser != null) {
-            return ResponseEntity.status(HttpStatus.NO_CONTENT).body(deletedUser);
-        } else {
+        try {
+            boolean deleted = userService.deleteUser(id);
+            if (deleted) {
+                return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+            } else {
+                return ResponseEntity.notFound().build();
+            }
+        } catch (ResourceNotFoundException e) {
             return ResponseEntity.notFound().build();
         }
     }
     
     @PatchMapping("/update-email/{id}")
     public ResponseEntity<UserResponse> updateUserEmail(@Min(1) @PathVariable Long id, @Valid @RequestBody UpdateUserRequest userRequest) {
+        try{
         UserResponse updatedUser = userService.patchUserEmail(id, userRequest);
         if (updatedUser != null) {
             return ResponseEntity.ok(updatedUser);
         } 
         else {
             return ResponseEntity.notFound().build();
+        }
+        }
+        catch (ResourceNotFoundException e) {
+            return ResponseEntity.notFound().build();
+        }
+        catch (InvalidParameterException e) {
+            return ResponseEntity.badRequest().build();
         }
     }
 }

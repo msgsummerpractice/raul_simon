@@ -1,0 +1,18 @@
+info:
+  name: Add_user
+  type: http
+  seq: 8
+
+http:
+  method: POST
+  url: http://localhost:8080/api/users/add
+  body:
+    type: json
+    data: '{"username":"Marcel123","email":"marcelsmecher@example.com","password":"parola123","firstname":"Marcel","lastname":"Popescu"}'
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5

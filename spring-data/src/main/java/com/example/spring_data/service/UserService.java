@@ -9,6 +9,8 @@ import com.example.spring_data.repository.UserRepository;
 import com.example.spring_data.dto.request.UpdateUserRequest;
 import com.example.spring_data.dto.request.UserRequest;
 import com.example.spring_data.dto.response.UserResponse;
+import com.example.spring_data.excetion.InvalidParameterException;
+import com.example.spring_data.excetion.ResourceNotFoundException;
 import com.example.spring_data.model.User;
 
 import java.time.LocalDateTime;
@@ -43,6 +45,12 @@ public class UserService {
         if (existingUser != null && newEmail != null && !newEmail.isEmpty()){
             existingUser.setEmail(newEmail);
         }
+        else if (existingUser == null) {
+            throw new ResourceNotFoundException("User with ID " + id + " not found.");
+        }
+        else {
+            throw new InvalidParameterException("Email cannot be null or empty.");
+        }
 
         User updatedUser = userRepository.save(existingUser);
         UserResponse userResponse = modelMapper.map(updatedUser, UserResponse.class);
@@ -69,7 +77,7 @@ public class UserService {
             userResponse.setModifiedAt(LocalDateTime.now());
             return userResponse;
         }
-        return null;
+        throw new ResourceNotFoundException("User with ID " + id + " not found.");
     }
 
     public boolean deleteUser(Long id) {
@@ -78,14 +86,15 @@ public class UserService {
             userRepository.delete(existingUser);
             return true;
         }
-        return false;
+        throw new ResourceNotFoundException("User with ID " + id + " not found.");
     }
 
     public UserResponse getUserById(Long id) {
         User user = userRepository.findById(id).orElse(null);
         if (user == null) {
-            return null;
+            throw new ResourceNotFoundException("User with ID " + id + " not found.");
         }
+
         ModelMapper modelMapper = new ModelMapper();
         UserResponse userResponse = modelMapper.map(user, UserResponse.class);
         return userResponse;
@@ -104,10 +113,18 @@ public class UserService {
     }
 
     public User getUserByUsername(String username) {
+        if (userRepository.findByUsername(username) == null) {
+            throw new ResourceNotFoundException("User with username " + username + " not found.");
+        }
+
         return userRepository.findByUsername(username);
     }
 
     public User getUserByEmail(String email) {
+        if (userRepository.findByEmail(email) == null) {
+            throw new ResourceNotFoundException("User with email " + email + " not found.");
+        }
+        
         return userRepository.findByEmail(email);
     }
 

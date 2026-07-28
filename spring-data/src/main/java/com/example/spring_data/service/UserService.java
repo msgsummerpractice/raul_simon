@@ -1,7 +1,6 @@
 package com.example.spring_data.service;
 
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -18,8 +17,11 @@ import java.util.List;
 @Service
 public class UserService {
     
-    @Autowired
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
+
+    public UserService(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
 
     public UserResponse createUser(UserRequest userRequest) {
         ModelMapper modelMapper = new ModelMapper();
@@ -53,30 +55,30 @@ public class UserService {
         ModelMapper modelMapper = new ModelMapper();
         User user = modelMapper.map(userRequest, User.class);
         User existingUser = userRepository.findById(id).orElse(null);
+
         if (existingUser != null) {
             existingUser.setUsername(user.getUsername());
             existingUser.setEmail(user.getEmail());
             existingUser.setPassword(user.getPassword());
             existingUser.setFirstname(user.getFirstname());
             existingUser.setLastname(user.getLastname());
+
+            userRepository.save(existingUser);
+
+            UserResponse userResponse = modelMapper.map(existingUser, UserResponse.class);
+            userResponse.setModifiedAt(LocalDateTime.now());
+            return userResponse;
         }
-
-        User updatedUser = userRepository.save(existingUser);
-        UserResponse userResponse = modelMapper.map(updatedUser, UserResponse.class);
-        userResponse.setModifiedAt(LocalDateTime.now());
-
-
-        return userResponse;
+        return null;
     }
 
-    public UserResponse deleteUser(Long id) {
-        ModelMapper modelMapper = new ModelMapper();
+    public boolean deleteUser(Long id) {
         User existingUser = userRepository.findById(id).orElse(null);
         if (existingUser != null) {
             userRepository.delete(existingUser);
+            return true;
         }
-        UserResponse userResponse = modelMapper.map(existingUser, UserResponse.class);
-        return userResponse;
+        return false;
     }
 
     public UserResponse getUserById(Long id) {
@@ -93,6 +95,7 @@ public class UserService {
         Pageable pageable = PageRequest.of(page, size);
         Page<User> usersPage = userRepository.findAll(pageable);
         ModelMapper modelMapper = new ModelMapper();
+
         return usersPage.map(user -> modelMapper.map(user, UserResponse.class));
     }
 

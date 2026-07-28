@@ -4,27 +4,24 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 
 public class User {
-    // @NotBlank
+    @NotBlank
     private String name;
 
-    // @NotNull
+    @Min(14)
     private int age;
 
-    // @Email
-    // @NotBlank
+    @Email
+    @NotBlank
     private String email;
-
-    private static Logger logger = LoggerFactory.getLogger(User.class);
 
     public User(String name, int age, String email) {
         this.name = name;
         this.age = age;
         this.email = email;
-        logger.info("User created: " + name + ", " + age + ", " + email);
     }
 
     public void setName(String name) {

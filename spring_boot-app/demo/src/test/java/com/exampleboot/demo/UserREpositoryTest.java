@@ -1,32 +1,42 @@
 package com.exampleboot.demo;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Spy;
+import org.mockito.junit.jupiter.MockitoExtension;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import org.springframework.boot.test.context.SpringBootTest;
+import static org.mockito.Mockito.verify;
+
+
+import java.util.List;
+
 import com.exampleboot.demo.repository.UserRepo;
 import com.exampleboot.demo.model.User;
 
-@SpringBootTest
-public class UserREpositoryTest {
+@ExtendWith(MockitoExtension.class)
+public class UserRepositoryTest {
 
-    @Autowired
+    @Spy
     private UserRepo userRepo;
 
     @Test
     public void testAddUser() {
         User newUser = new User("Charlie", 28, "charlie@example.com");
         userRepo.addUser(newUser);
-        assertEquals(3, userRepo.getUsers().size());
+        List<User> users = userRepo.getUsers();
+        assertEquals(3, users.size());
         assertEquals("Charlie", userRepo.getUsers().get(2).getName());
+        verify(userRepo).addUser(newUser);
     }
 
     @Test
     public void testGetUsers() {
-        assertEquals(2, userRepo.getUsers().size());
-        assertEquals("Alice", userRepo.getUsers().get(0).getName());
-        assertEquals("Bob", userRepo.getUsers().get(1).getName());
+        List<User> users = userRepo.getUsers();
+        assertEquals(2, users.size());
+        assertEquals("Alice", users.get(0).getName());
+        assertEquals("Bob", users.get(1).getName());
+        verify(userRepo).getUsers();
     }
 
 

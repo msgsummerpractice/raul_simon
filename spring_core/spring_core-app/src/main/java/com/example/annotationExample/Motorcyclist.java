@@ -6,12 +6,9 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class Motorcyclist {
-    private Vehicle vehicle;
-
     @Autowired
-    public Motorcyclist(@Qualifier("motorcycle") Vehicle vehicle) {
-        this.vehicle = vehicle;
-    }
+    @Qualifier("superMotorcycle")
+    private Vehicle vehicle;
 
     public void ride() {
         vehicle.drive();

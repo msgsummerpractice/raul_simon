@@ -1,9 +1,7 @@
 package com.example.spring_data.security;
 
 import org.springframework.stereotype.Component;
-import io.jsonwebtoken.Jwts.SIG;
 import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.security.core.Authentication;
@@ -26,7 +24,7 @@ public class JwtTokenProvider {
                 .subject(name)
                 .issuedAt(currentDate)
                 .expiration(expireDate)
-                .signWith(key(), SignatureAlgorithm.HS256)
+                .signWith((SecretKey) key())
                 .compact();
         return token;
     }

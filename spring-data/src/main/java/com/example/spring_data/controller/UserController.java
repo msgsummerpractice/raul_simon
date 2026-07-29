@@ -21,8 +21,6 @@ import java.util.List;
 import com.example.spring_data.dto.request.UpdateUserRequest;
 import com.example.spring_data.dto.request.UserRequest;
 import com.example.spring_data.dto.response.UserResponse;
-import com.example.spring_data.exception.InvalidParameterException;
-import com.example.spring_data.exception.ResourceNotFoundException;
 import com.example.spring_data.service.UserService;
 
 import jakarta.validation.Valid;
@@ -82,44 +80,21 @@ public class UserController {
 
     @PutMapping("/{id}")
     public ResponseEntity<UserResponse> updateUser(@Valid @RequestBody UserRequest userRequest, @Min(1) @PathVariable Long id) {
-        try{
             UserResponse updatedUser = userService.updateUser(id, userRequest);
             return ResponseEntity.ok(updatedUser);
-        }
-        catch (ResourceNotFoundException e) {
-            return ResponseEntity.notFound().build();
-        }
-        catch (InvalidParameterException e) {
-            return ResponseEntity.badRequest().build();
-        }
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<UserResponse> deleteUser(@Min(1) @PathVariable Long id) {
-        try {
-            boolean deleted = userService.deleteUser(id);
-            if (deleted) {
-                return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
-            } else {
-                return ResponseEntity.notFound().build();
-            }
-        } catch (ResourceNotFoundException e) {
-            return ResponseEntity.notFound().build();
-        }
+            userService.deleteUser(id);
+
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
     
     @PatchMapping("/update-email/{id}")
     public ResponseEntity<UserResponse> updateUserEmail(@Min(1) @PathVariable Long id, @Valid @RequestBody UpdateUserRequest userRequest) {
-        try{
         UserResponse updatedUser = userService.patchUserEmail(id, userRequest);
 
         return ResponseEntity.ok(updatedUser);
-        }
-        catch (ResourceNotFoundException e) {
-            return ResponseEntity.notFound().build();
-        }
-        catch (InvalidParameterException e) {
-            return ResponseEntity.badRequest().build();
-        }
     }
 }

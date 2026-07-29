@@ -128,7 +128,7 @@ public class UserControllerTests {
 
     @Test
     public void testDeleteUserNotFound() throws Exception {
-        when(userService.deleteUser(any(Long.class))).thenReturn(false);
+        when(userService.deleteUser(any(Long.class))).thenThrow(new ResourceNotFoundException("User with ID 5 not found."));
         mockMvc.perform(delete("/api/users/delete/5"))
                 .andExpect(status().isNotFound());
     }

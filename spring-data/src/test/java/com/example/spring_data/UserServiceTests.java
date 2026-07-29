@@ -1,6 +1,8 @@
 package com.example.spring_data;
 import com.example.spring_data.repository.UserRepository;
 import com.example.spring_data.service.UserService;
+import com.example.spring_data.dto.request.UserRequest;
+import com.example.spring_data.dto.response.UserResponse;
 import com.example.spring_data.model.User;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -18,9 +20,12 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.modelmapper.ModelMapper;
 
 @ExtendWith(MockitoExtension.class)
 public class UserServiceTests {
+
+    private ModelMapper modelMapper = new ModelMapper();
 
     @Mock
     private UserRepository userRepository;
@@ -28,12 +33,12 @@ public class UserServiceTests {
     @InjectMocks
     private UserService userService;
 
-
     @Test
     public void testCreateUser() {
         User newUser = new User(1L,"testuser", "testuser@example.com", "password", "Test", "User");
+        UserRequest userRequest = modelMapper.map(newUser, UserRequest.class);
         Mockito.when(userRepository.save(any(User.class))).thenReturn(newUser);
-        User createdUser = userService.createUser(newUser);
+        UserResponse createdUser = userService.createUser(userRequest);
 
         assertEquals("testuser", createdUser.getUsername());
         assertEquals("Test", createdUser.getFirstname());
@@ -53,10 +58,12 @@ public class UserServiceTests {
         newUser.setEmail("updateduser@example.com");
         newUser.setFirstname("Updated");
         newUser.setUsername("updateduser");
+        UserRequest userRequest = modelMapper.map(newUser, UserRequest.class);
+
 
         Mockito.when(userRepository.findById(userId)).thenReturn(java.util.Optional.of(userToUpdate));
         Mockito.when(userRepository.save(userToUpdate)).thenReturn(userToUpdate);
-        User updatedUser = userService.updateUser(userId, newUser);
+        UserResponse updatedUser = userService.updateUser(userId, userRequest);
 
 
         assertEquals("updateduser", updatedUser.getUsername());

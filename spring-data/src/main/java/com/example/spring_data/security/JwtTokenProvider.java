@@ -2,6 +2,8 @@ package com.example.spring_data.security;
 
 import org.springframework.stereotype.Component;
 import org.springframework.beans.factory.annotation.Value;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
@@ -16,6 +18,8 @@ import java.util.Date;
 public class JwtTokenProvider {
 
     private String jwtSecret;
+
+    private Logger logger = LoggerFactory.getLogger(JwtTokenProvider.class);
 
     public JwtTokenProvider(@Value("${jwt.secret}") String jwtSecret) {
         this.jwtSecret = jwtSecret;
@@ -51,9 +55,11 @@ public class JwtTokenProvider {
                 .getSubject();
         }
         catch(JwtException ex){
+            logger.error("Invalid JWT token: {}", ex.getMessage());
             return null;
         }
         catch(IllegalArgumentException ex){
+            logger.error("JWT claims string is empty: {}", ex.getMessage());
             return null;
         }
     }
@@ -67,9 +73,11 @@ public class JwtTokenProvider {
         return true;
         }
         catch(JwtException ex){
+            logger.error("Invalid JWT token: {}", ex.getMessage());
             return false;
         }
         catch(IllegalArgumentException ex){
+            logger.error("JWT claims string is empty: {}", ex.getMessage());
             return false;
         }
 

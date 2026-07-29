@@ -1,6 +1,9 @@
 package com.example.spring_data.security;
 
 import org.springframework.stereotype.Component;
+import org.springframework.beans.factory.annotation.Value;
+
+import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
@@ -12,7 +15,12 @@ import java.util.Date;
 @Component
 public class JwtTokenProvider {
 
-    private String jwtSecret = "1XnWLbM/knvS90yuOKEy5m9V/4wUkCe7+ChrS4QU7q8=";
+    private String jwtSecret;
+
+    public JwtTokenProvider(@Value("${jwt.secret}") String jwtSecret) {
+        this.jwtSecret = jwtSecret;
+    }
+
     private long jwtExpirationInMs = 3600000;
 
     public String generateToken(Authentication authentication) {
@@ -34,21 +42,36 @@ public class JwtTokenProvider {
     }
 
     public String getUsername(String token){
-
+        try{
         return Jwts.parser()
                 .verifyWith((SecretKey) key())
                 .build()
                 .parseSignedClaims(token)
                 .getPayload()
                 .getSubject();
+        }
+        catch(JwtException ex){
+            return null;
+        }
+        catch(IllegalArgumentException ex){
+            return null;
+        }
     }
 
     public boolean validateToken(String token){
+        try{
         Jwts.parser()
                 .verifyWith((SecretKey) key())
                 .build()
                 .parse(token);
         return true;
+        }
+        catch(JwtException ex){
+            return false;
+        }
+        catch(IllegalArgumentException ex){
+            return false;
+        }
 
     }
 }

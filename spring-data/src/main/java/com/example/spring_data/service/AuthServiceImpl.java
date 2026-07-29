@@ -1,6 +1,6 @@
 package com.example.spring_data.service;
 
-import java.util.Random;
+import java.security.SecureRandom;
 import java.util.stream.Collectors;
 
 import org.springframework.security.authentication.AuthenticationManager;
@@ -53,11 +53,11 @@ public class AuthServiceImpl implements AuthService {
         //         .map(authority -> authority.getAuthority())
         //         .collect(Collectors.toSet()));
 
-        String optCode = String.format("%06d", new Random().nextInt(999999));
+        String otpCode = String.format("%06d", new SecureRandom().nextInt(1000000));
 
-        userService.saveUserMfaCode(signInRequest.getUsername(), optCode);
+        userService.saveUserMfaCode(signInRequest.getUsername(), otpCode);
 
-        System.out.println("Generated OTP Code for user " + signInRequest.getUsername() + ": " + optCode);
+        System.out.println("Generated OTP Code for user " + signInRequest.getUsername() + ": " + otpCode);
 
         return new LogInResponse("MFA code sent to user " + signInRequest.getUsername() + ". Please check the console for the code.");
     }

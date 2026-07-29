@@ -22,10 +22,13 @@ public class UserService {
     
     private final UserRepository userRepository;
 
+    private final BCryptPasswordEncoder passwordEncoder;
+
     private ModelMapper modelMapper;
 
-    public UserService(UserRepository userRepository) {
+    public UserService(UserRepository userRepository, BCryptPasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
         this.modelMapper = new ModelMapper();
     }
 
@@ -34,8 +37,7 @@ public class UserService {
         User user = modelMapper.map(userRequest, User.class);
 
         String password = user.getPassword();
-        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-        String encodedPassword = passwordEncoder.encode(password);
+        String encodedPassword = this.passwordEncoder.encode(password);
         user.setPassword(encodedPassword);
         
         User savedUser = userRepository.save(user);

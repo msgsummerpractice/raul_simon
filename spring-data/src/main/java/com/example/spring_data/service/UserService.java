@@ -10,8 +10,8 @@ import com.example.spring_data.repository.UserRepository;
 import com.example.spring_data.dto.request.UpdateUserRequest;
 import com.example.spring_data.dto.request.UserRequest;
 import com.example.spring_data.dto.response.UserResponse;
-import com.example.spring_data.excetion.InvalidParameterException;
-import com.example.spring_data.excetion.ResourceNotFoundException;
+import com.example.spring_data.exception.InvalidParameterException;
+import com.example.spring_data.exception.ResourceNotFoundException;
 import com.example.spring_data.model.User;
 
 import java.time.LocalDateTime;
@@ -22,12 +22,14 @@ public class UserService {
     
     private final UserRepository userRepository;
 
+    private ModelMapper modelMapper;
+
     public UserService(UserRepository userRepository) {
         this.userRepository = userRepository;
+        this.modelMapper = new ModelMapper();
     }
 
     public UserResponse createUser(UserRequest userRequest) {
-        ModelMapper modelMapper = new ModelMapper();
 
         User user = modelMapper.map(userRequest, User.class);
 
@@ -45,7 +47,6 @@ public class UserService {
     }
 
     public UserResponse patchUserEmail(Long id, UpdateUserRequest userRequest) {
-        ModelMapper modelMapper = new ModelMapper();
         User existingUser = userRepository.findById(id).orElse(null);
         String newEmail = userRequest.getEmail();
 
@@ -115,8 +116,13 @@ public class UserService {
         return usersPage.map(user -> modelMapper.map(user, UserResponse.class));
     }
 
-    public List<User> getAllUsers() {
-        return userRepository.findAll();
+    public List<UserResponse> getAllUsers() {
+        List<User> users = userRepository.findAll();
+        List<UserResponse> userResponses = users.stream()
+                .map(user -> modelMapper.map(user, UserResponse.class))
+                .toList();
+
+        return userResponses;
     }
 
     public User getUserByUsername(String username) {

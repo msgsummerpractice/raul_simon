@@ -6,6 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+// import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,9 +22,6 @@ import java.util.List;
 import com.example.spring_data.dto.request.UpdateUserRequest;
 import com.example.spring_data.dto.request.UserRequest;
 import com.example.spring_data.dto.response.UserResponse;
-import com.example.spring_data.excetion.InvalidParameterException;
-import com.example.spring_data.excetion.ResourceNotFoundException;
-import com.example.spring_data.model.User;
 import com.example.spring_data.service.UserService;
 
 import jakarta.validation.Valid;
@@ -34,6 +32,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api/users")
 @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
+// @Validated
 public class UserController {
 
     private final UserService userService;
@@ -55,9 +54,10 @@ public class UserController {
     }
 
     @GetMapping("/all")
-    public ResponseEntity<List<User>> getAllUsers() {
-        if (!userService.getAllUsers().isEmpty()){
-            return ResponseEntity.ok(userService.getAllUsers());
+    public ResponseEntity<List<UserResponse>> getAllUsers() {
+        List<UserResponse> allUsers = userService.getAllUsers();
+        if (!allUsers.isEmpty()){
+            return ResponseEntity.ok(allUsers);
         }
         else {
             return ResponseEntity.noContent().build();
@@ -74,61 +74,30 @@ public class UserController {
         }
     }
 
-    @PostMapping("/add")
+    @PostMapping()
     public ResponseEntity<UserResponse> addUser(@Valid @RequestBody UserRequest user) {
         UserResponse createdUser = userService.createUser(user);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdUser);
     }
 
-    @PutMapping("/update/{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<UserResponse> updateUser(@Valid @RequestBody UserRequest userRequest, @Min(1) @PathVariable Long id) {
-        try{
             UserResponse updatedUser = userService.updateUser(id, userRequest);
-            if (updatedUser != null) {
-                return ResponseEntity.ok(updatedUser);
-            } else {
-                return ResponseEntity.notFound().build();
-            }
-        }
-        catch (ResourceNotFoundException e) {
-            return ResponseEntity.notFound().build();
-        }
-        catch (InvalidParameterException e) {
-            return ResponseEntity.badRequest().build();
-        }
+            return ResponseEntity.ok(updatedUser);
     }
 
-    @DeleteMapping("/delete/{id}")
+    @DeleteMapping("/{id}")
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<Void> deleteUser(@Min(1) @PathVariable Long id) {
-        try {
-            boolean deleted = userService.deleteUser(id);
-            if (deleted) {
-                return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
-            } else {
-                return ResponseEntity.notFound().build();
-            }
-        } catch (ResourceNotFoundException e) {
-            return ResponseEntity.notFound().build();
-        }
+    public ResponseEntity<UserResponse> deleteUser(@Min(1) @PathVariable Long id) {
+            userService.deleteUser(id);
+
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
     
     @PatchMapping("/update-email/{id}")
     public ResponseEntity<UserResponse> updateUserEmail(@Min(1) @PathVariable Long id, @Valid @RequestBody UpdateUserRequest userRequest) {
-        try{
         UserResponse updatedUser = userService.patchUserEmail(id, userRequest);
-        if (updatedUser != null) {
-            return ResponseEntity.ok(updatedUser);
-        } 
-        else {
-            return ResponseEntity.notFound().build();
-        }
-        }
-        catch (ResourceNotFoundException e) {
-            return ResponseEntity.notFound().build();
-        }
-        catch (InvalidParameterException e) {
-            return ResponseEntity.badRequest().build();
-        }
+
+        return ResponseEntity.ok(updatedUser);
     }
 }

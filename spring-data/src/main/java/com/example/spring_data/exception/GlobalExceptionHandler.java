@@ -1,4 +1,4 @@
-package com.example.spring_data.excetion;
+package com.example.spring_data.exception;
 
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;

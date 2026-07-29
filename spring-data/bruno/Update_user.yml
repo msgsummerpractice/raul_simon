@@ -5,7 +5,7 @@ info:
 
 http:
   method: PUT
-  url: http://localhost:8080/api/users/update/1
+  url: http://localhost:8080/api/users/1
   body:
     type: json
     data: '{"username":"Ana123","email":"ana12@example.com","password":"parola123","firstname":"Ana","lastname":"Maria"}'

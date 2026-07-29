@@ -136,7 +136,8 @@ public class UserServiceTests {
             new User(2L, "testuser2", "testuser2@example.com", "password", "Test2", "User2"),
             new User(3L, "testuser3", "testuser3@example.com", "password", "Test3", "User3"),
             new User(4L, "testuser4", "testuser4@example.com", "password", "Test4", "User4"),
-            new User(5L, "testuser5", "testuser5@example.com", "password", "Test5", "User5"));
+            new User(5L, "testuser5", "testuser5@example.com", "password", "Test5", "User5")
+        );
         Mockito.when(userRepository.findTop10ByUsernameContainingIgnoreCaseOrderByUsernameAsc("test")).thenReturn(users);
         List<User> retrievedUsers = userService.getUsersByUsername("test");
 

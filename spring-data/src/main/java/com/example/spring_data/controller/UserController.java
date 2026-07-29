@@ -5,6 +5,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 // import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -30,6 +31,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/users")
+@PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
 // @Validated
 public class UserController {
 
@@ -85,6 +87,7 @@ public class UserController {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<UserResponse> deleteUser(@Min(1) @PathVariable Long id) {
             userService.deleteUser(id);
 

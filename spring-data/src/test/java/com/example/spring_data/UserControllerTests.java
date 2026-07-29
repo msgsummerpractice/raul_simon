@@ -10,7 +10,7 @@ import com.example.spring_data.controller.UserController;
 import com.example.spring_data.dto.request.UpdateUserRequest;
 import com.example.spring_data.dto.request.UserRequest;
 import com.example.spring_data.dto.response.UserResponse;
-import com.example.spring_data.model.User;
+import com.example.spring_data.exception.ResourceNotFoundException;
 import com.example.spring_data.service.UserService;
 
 import static org.mockito.ArgumentMatchers.any;
@@ -20,6 +20,8 @@ import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+import java.security.InvalidParameterException;
 import java.time.LocalDateTime;
 import java.util.List;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -48,8 +50,7 @@ public class UserControllerTests {
 
     @Test
     public void testGetAllUsers() throws Exception {
-        List<User> users = List.of(new User(1L, "testuser", "testuser@example.com", "password123", "Test", "User"));
-        when(userService.getAllUsers()).thenReturn(users);
+        when(userService.getAllUsers()).thenReturn(List.of(userResponse));
         mockMvc.perform(get("/api/users/all"))
                 .andExpect(status().isOk());
     }
@@ -99,7 +100,7 @@ public class UserControllerTests {
     @Test
     public void testUpdateUserNotFound() throws Exception {
         String userJson = "{\"username\":\"testuser\",\"email\":\"testuser@example.com\",\"password\":\"password123\",\"firstname\":\"Test\",\"lastname\":\"User\"}";
-        when(userService.updateUser(any(Long.class), any(UserRequest.class))).thenReturn(null);
+        when(userService.updateUser(any(Long.class), any(UserRequest.class))).thenThrow(new ResourceNotFoundException("User with ID 5 not found."));
         mockMvc.perform(put("/api/users/update/5")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(userJson))
@@ -109,7 +110,7 @@ public class UserControllerTests {
     @Test
     public void testUpdateUserWithInvalidData() throws Exception {
         String userJson = "{\"username\":\"\",\"email\":\"invalide mail\",\"password\":\"\",\"firstname\":\"Test\",\"lastname\":\"User\"}";
-        when(userService.updateUser(any(Long.class), any(UserRequest.class))).thenReturn(null);
+        when(userService.updateUser(any(Long.class), any(UserRequest.class))).thenThrow(new InvalidParameterException("Invalid data provided."));
         mockMvc.perform(put("/api/users/update/1")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(userJson))
@@ -146,7 +147,7 @@ public class UserControllerTests {
     @Test
     public void testUpdateUserEmailNotFound() throws Exception {
         String emailJson = "{\"email\":\"newemail@example.com\"}";
-        when(userService.patchUserEmail(any(Long.class), any(UpdateUserRequest.class))).thenReturn(null);
+        when(userService.patchUserEmail(any(Long.class), any(UpdateUserRequest.class))).thenThrow(new ResourceNotFoundException("User with ID 5 not found."));
         mockMvc.perform(patch("/api/users/update-email/5")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(emailJson))
@@ -156,7 +157,7 @@ public class UserControllerTests {
     @Test
     public void testUpdateUserEmailWithInvalidData() throws Exception {
         String emailJson = "{\"email\":\"invalid email\"}";
-        when(userService.patchUserEmail(any(Long.class), any(UpdateUserRequest.class))).thenReturn(null);
+        when(userService.patchUserEmail(any(Long.class), any(UpdateUserRequest.class))).thenThrow(new InvalidParameterException("Invalid data provided."));
         mockMvc.perform(patch("/api/users/update-email/1")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(emailJson))

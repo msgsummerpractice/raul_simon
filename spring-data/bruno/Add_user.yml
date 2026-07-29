@@ -5,7 +5,7 @@ info:
 
 http:
   method: POST
-  url: http://localhost:8080/api/users/add
+  url: http://localhost:8080/api/users
   body:
     type: json
     data: '{"username":"Marcel123","email":"marcelsmecher@example.com","password":"parola123","firstname":"Marcel","lastname":"Popescu"}'

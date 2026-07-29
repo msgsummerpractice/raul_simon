@@ -1,0 +1,18 @@
+info:
+  name: Patch a User
+  type: http
+  seq: 2
+
+http:
+  method: PATCH
+  url: http://localhost:8080/api/users/update-email/1
+  body:
+    type: json
+    data: '{"email":"ana1@example.com"}'
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5

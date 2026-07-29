@@ -1,0 +1,18 @@
+info:
+  name: Update_user
+  type: http
+  seq: 10
+
+http:
+  method: PUT
+  url: http://localhost:8080/api/users/1
+  body:
+    type: json
+    data: '{"username":"Ana123","email":"ana12@example.com","password":"parola123","firstname":"Ana","lastname":"Maria"}'
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5

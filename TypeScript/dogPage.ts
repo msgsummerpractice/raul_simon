@@ -1,14 +1,13 @@
 const button = document.querySelector<HTMLButtonElement>("#myButton");
 const image: HTMLImageElement | null = document.querySelector("#dogImage");
 
-if(!button || !image) {
+if (!button || !image) {
   throw new Error("Button or image element not found in the DOM.");
 }
 
-type DogApiResponse ={
-    message: string;
-}
-
+type DogApiResponse = {
+  message: string;
+};
 
 const url = "https://dog.ceo/api/breeds/image/random";
 
@@ -32,7 +31,9 @@ async function startLoading() {
 }
 
 async function stopLoading() {
-  if (!button) return;
+  if (!button) {
+    return;
+  }
   button.removeAttribute("disabled");
   button.innerHTML = "Show me a dog!";
 }

@@ -1,6 +1,8 @@
 <body>
   <header>
-    <mat-toolbar class="flex justify-end items-center w-full px-2 sm:px-4">
+    <mat-toolbar class="flex justify-between items-center w-full px-2 sm:px-4 shadow-md">
+      <span class="text-cyan-300">Dog Gallery</span>
+
       <div class="hidden md:flex items-center gap-2">
         <a class="p-4"><button mat-button color="primary">Home</button></a>
         <a class="p-4"><button mat-button color="primary">Favorite</button></a>
@@ -17,7 +19,7 @@
           </button>
         </a>
         <a>
-          <button mat-icon-button>
+          <button mat-icon-button backgroundColor="primary" color="accent">
             <mat-icon class="transform scale-75 md:scale-100 transition-transform"
               >settings</mat-icon
             >
@@ -35,7 +37,7 @@
   <div class="max-w-6xl mx-auto p-6">
     <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 p-6">
       @for (image of dogImages(); track $index) {
-        <div class="bg-teal-400 rounded-lg shadow p-6">
+        <div class="bg-teal-400 rounded-lg shadow p-6 shadow-md">
           <img [src]="image" alt="Dog" class="w-full h-64 object-cover rounded" />
           <p class="text-gray-600 text-sm mt-2">A very cute dog.</p>
         </div>

@@ -5,6 +5,7 @@ import { App } from './app';
 import { bootstrapApplication } from '@angular/platform-browser';
 
 export const routes: Routes = [
+  { path: '', redirectTo: 'home', pathMatch: 'full' },
   { path: 'home', component: HomeComponent },
   {
     path: 'login',

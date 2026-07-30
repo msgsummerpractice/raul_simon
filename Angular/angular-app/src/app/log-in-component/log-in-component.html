@@ -1,2 +1,44 @@
-<p>log-in-component works!</p>
-<button mat-button (click)="goHome()">Go Home</button>
+<div class="flex justify-center items-center min-h-screen bg-gray-100 p-4">
+  <div class="bg-black p-8 rounded shadow-md w-full max-w-md">
+    <h2 class="text-cyan-400 text-2xl font-bold mb-6 text-center">Login</h2>
+    <form
+      novalidate
+      class="grid bg-cyan-500 w-full gap-4 p-4 border border-white rounded-sm shadow-md shadow-white"
+      [formGroup]="loginFormGroup"
+      (ngSubmit)="onFormSubmit()"
+    >
+      @if (loginFormGroup.controls.email.invalid) {
+        <small class="text-error">Email is required.</small>
+      }
+      <label for="email" class="text-black">Email: </label>
+      <input
+        type="text"
+        id="email"
+        class="border border-white rounded p-2 bg-black text-white"
+        formControlName="email"
+      />
+
+      @if (loginFormGroup.controls.password.invalid) {
+        <small class="text-error">Password must be at least 6 characters.</small>
+      }
+      <label for="password" class="text-black">Password: </label
+      ><input
+        type="password"
+        id="password"
+        class="border border-white rounded p-2 bg-black text-white"
+        formControlName="password"
+      />
+
+      <button
+        mat-button
+        color="primary"
+        style="background-color: black"
+        type="submit"
+        [disabled]="!loginFormGroup.valid"
+        class="w-full mt-2"
+      >
+        Submit
+      </button>
+    </form>
+  </div>
+</div>

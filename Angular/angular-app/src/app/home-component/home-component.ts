@@ -6,13 +6,13 @@ import { forkJoin } from 'rxjs';
 import { DogService } from '../dogService';
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../authService/auth-service';
-// import { Auth } from '../auth/auth';
+import { Auth } from '../auth/auth';
 import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-home-component',
   standalone: true,
-  imports: [MatToolbarModule, MatButtonModule, MatIconModule, CommonModule, RouterLink],
+  imports: [MatToolbarModule, MatButtonModule, MatIconModule, CommonModule, RouterLink, Auth],
   templateUrl: './home-component.html',
 })
 export class HomeComponent {
@@ -43,5 +43,9 @@ export class HomeComponent {
 
   logout(): void {
     this.authService.logout();
+  }
+
+  isAuthenticated(): boolean {
+    return this.authService.isAuthentificated();
   }
 }

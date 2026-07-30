@@ -11,17 +11,17 @@
       </div> -->
 
       <div class="flex items-center gap-2 sm:gap-4 ml-4">
-        <a rounterLink="/">
+        <a routerLink="/">
           <button mat-icon-button>
             <mat-icon class="transform scale-75 md:scale-100 transition-transform">home</mat-icon>
           </button>
         </a>
         <a>
-          <button mat-icon-button routerLink="/login">
+          <button mat-icon-button routerLink="/login" [disabled]="isAuthenticated()">
             <mat-icon class="transform scale-75 md:scale-100 transition-transform">login</mat-icon>
           </button>
         </a>
-        <a rounterLink="logout">
+        <a>
           <button mat-icon-button (click)="logout()">
             <mat-icon class="transform scale-75 md:scale-100 transition-transform">logout</mat-icon>
           </button>
@@ -37,8 +37,8 @@
     </mat-toolbar>
   </header>
 
-  <h1 class="text-teal-400 text-center text-3xl font-bold text-gray-900 p-2">Dog Gallery</h1>
-  <p class="text-teal-400 text-sm text-center p-1 text-black-500">
+  <h1 class="text-cyan-400 text-center text-3xl font-bold text-gray-900 p-2">Dog Gallery</h1>
+  <p class="text-cyan-400 text-sm text-center p-1 text-black-500">
     This gallery showcases three dog breed cards
   </p>
 
@@ -88,5 +88,5 @@
       />
     </div> -->
   </div>
-  <!-- <div *appAuth><p>I am logged in!</p></div> -->
+  <div *appAuth><p>I am logged in!</p></div>
 </body>

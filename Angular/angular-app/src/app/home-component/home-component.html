@@ -1,0 +1,92 @@
+<body>
+  <header>
+    <mat-toolbar class="flex justify-between items-center w-full px-2 sm:px-4 shadow-md">
+      <span class="text-cyan-300">Dog Gallery</span>
+
+      <!-- <div class="hidden md:flex items-center gap-2">
+        <a class="p-4"><button mat-button color="primary">Home</button></a>
+        <a class="p-4"><button mat-button color="primary">Favorite</button></a>
+        <a class="p-4"><button mat-button color="primary">About</button></a>
+        <a class="p-4"><button mat-button color="primary">Contact</button></a>
+      </div> -->
+
+      <div class="flex items-center gap-2 sm:gap-4 ml-4">
+        <a rounterLink="/">
+          <button mat-icon-button>
+            <mat-icon class="transform scale-75 md:scale-100 transition-transform">home</mat-icon>
+          </button>
+        </a>
+        <a>
+          <button mat-icon-button routerLink="/login">
+            <mat-icon class="transform scale-75 md:scale-100 transition-transform">login</mat-icon>
+          </button>
+        </a>
+        <a rounterLink="logout">
+          <button mat-icon-button (click)="logout()">
+            <mat-icon class="transform scale-75 md:scale-100 transition-transform">logout</mat-icon>
+          </button>
+        </a>
+        <a>
+          <button mat-icon-button backgroundColor="primary" color="accent">
+            <mat-icon class="transform scale-75 md:scale-100 transition-transform"
+              >settings</mat-icon
+            >
+          </button>
+        </a>
+      </div>
+    </mat-toolbar>
+  </header>
+
+  <h1 class="text-teal-400 text-center text-3xl font-bold text-gray-900 p-2">Dog Gallery</h1>
+  <p class="text-teal-400 text-sm text-center p-1 text-black-500">
+    This gallery showcases three dog breed cards
+  </p>
+
+  <div class="max-w-6xl mx-auto p-6">
+    <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 p-6">
+      @for (image of dogImages(); track $index) {
+        <div class="bg-teal-400 rounded-lg shadow p-6 shadow-md">
+          <img [src]="image" alt="Dog" class="w-full h-64 object-cover rounded" />
+          <p class="text-gray-600 text-sm mt-2">A very cute dog.</p>
+        </div>
+      }
+    </div>
+    <button mat-raised-button color="primary" class="shadow-lg" (click)="loadDogImages()">
+      Fetch Dog Images
+    </button>
+
+    <!-- <div class="bg-cyan-100 rounded-lg p-6">
+      <h2 class="text-center text-2xl font-bold text-gray-900">Belgian Malinois</h2>
+      <p class="text-sm text-center text-black-500">The Belgian Malinois is an intelligent, energetic, and highly trainable herding dog known
+        for loyalty, agility, and versatility in both family and working roles.</p>
+      <img
+        src="https://images.dog.ceo/breeds/malinois/n02105162_9557.jpg"
+        alt="Dog Breed 1"
+        class="m-4 rounded-lg"
+      />
+    </div>
+
+    <div class="bg-fuchsia-100 rounded-lg p-6">
+      <h2 class="text-center text-2xl font-bold text-gray-900">Samoyed</h2>
+      <p class="text-sm text-center text-black-500"> The Samoyed is a friendly, intelligent, and affectionate Arctic working breed
+        known for its fluffy white coat and signature “Sammy smile.”</p>
+      <img
+        src="https://images.dog.ceo/breeds/samoyed/n02111889_10324.jpg"
+        alt="Dog Breed 2"
+        class="m-4 rounded-lg"
+      />
+    </div>
+
+    <div class="bg-lime-100 rounded-lg p-6">
+      <h2 class="text-center text-2xl font-bold text-gray-900">Boston Bulldog</h2>
+      <p class="text-sm text-center text-black-500">A Boston Bulldog is a hybrid dog breed resulting from crossing a Boston Terrier
+        with an English Bulldog, known for its friendly, loyal, and adaptable nature.</p>
+      <img
+        src="https://images.dog.ceo/breeds/bulldog-boston/n02096585_5171.jpg"
+        alt="Dog Breed 3"
+        class="m-4 rounded-lg"
+      />
+    </div> -->
+  </div>
+  <!-- <div *appAuth><p>I am logged in!</p></div> -->
+</body>

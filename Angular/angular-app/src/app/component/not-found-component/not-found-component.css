@@ -4,6 +4,10 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
+  @media (max-width: 600px) {
+    font-size: 0.8rem;
+    padding: 2rem 4rem;
+  }
 }
 
 h1 {
@@ -12,12 +16,20 @@ h1 {
   margin-bottom: 1rem;
   font-size: 3rem;
   padding: 3rem;
+  @media (max-width: 600px) {
+    font-size: 1.5rem;
+    padding: 2rem 4rem;
+  }
 }
 
 p {
   color: #00ffff;
   text-align: center;
   font-size: 1.5rem;
+  @media (max-width: 600px) {
+    font-size: 1rem;
+    padding: 2rem 4rem;
+  }
 }
 
 button {
@@ -26,6 +38,10 @@ button {
   padding: 1rem 2rem;
   align-items: center;
   align-self: center;
+  @media (max-width: 600px) {
+    font-size: 1rem;
+    padding: 2rem 4rem;
+  }
 }
 
 .home-button {

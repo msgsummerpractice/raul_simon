@@ -21,4 +21,8 @@ button {
   align-items: center;
   margin-top: 2rem;
   padding: 3rem 6rem;
+  @media (max-width: 600px) {
+    font-size: 0.8rem;
+    padding: 2rem 4rem;
+  }
 }

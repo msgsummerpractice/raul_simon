@@ -26,7 +26,7 @@ import {
   ReactiveFormsModule,
 } from '@angular/forms';
 import { MatAnchor } from '@angular/material/button';
-import { AuthService } from '../authService/auth-service';
+import { AuthService } from '../../service/authService/auth-service';
 import { Router } from '@angular/router';
 
 type LoginForm = {

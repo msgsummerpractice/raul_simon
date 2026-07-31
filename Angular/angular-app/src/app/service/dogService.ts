@@ -11,7 +11,7 @@ export interface DogImageResponse {
   providedIn: 'root',
 })
 export class DogService {
-  private http = inject(HttpClient);
+  private readonly http = inject(HttpClient);
   private readonly dogApiUrl = 'https://dog.ceo/api/breeds/image/random';
 
   getRandomDogImage(): Observable<DogImageResponse> {

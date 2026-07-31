@@ -1,13 +1,13 @@
 import { Directive, TemplateRef, ViewContainerRef, inject, effect } from '@angular/core';
-import { AuthService } from '../authService/auth-service';
+import { AuthService } from '../service/authService/auth-service';
 
 @Directive({
   selector: '[appAuth]',
 })
 export class Auth {
-  private templateRef: TemplateRef<any> = inject(TemplateRef);
-  private viewContainer: ViewContainerRef = inject(ViewContainerRef);
-  private authService = inject(AuthService);
+  private readonly templateRef: TemplateRef<any> = inject(TemplateRef);
+  private readonly viewContainer: ViewContainerRef = inject(ViewContainerRef);
+  private readonly authService = inject(AuthService);
 
   constructor() {
     effect(() => {

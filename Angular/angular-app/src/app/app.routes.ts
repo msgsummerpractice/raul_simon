@@ -1,6 +1,6 @@
 import { provideRouter, Routes } from '@angular/router';
-import { HomeComponent } from './home-component/home-component';
-import { NotFoundComponent } from './not-found-component/not-found-component';
+import { HomeComponent } from './component/home-component/home-component';
+import { NotFoundComponent } from './component/not-found-component/not-found-component';
 import { App } from './app';
 import { bootstrapApplication } from '@angular/platform-browser';
 
@@ -10,7 +10,7 @@ export const routes: Routes = [
   {
     path: 'login',
     loadComponent: () =>
-      import('./log-in-component/log-in-component').then((m) => m.LogInComponent),
+      import('./component/log-in-component/log-in-component').then((m) => m.LogInComponent),
   },
   { path: '**', component: NotFoundComponent },
 ];

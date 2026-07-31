@@ -3,9 +3,9 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { forkJoin } from 'rxjs';
-import { DogService } from '../dogService';
+import { DogService } from '../../service/dogService';
 import { CommonModule } from '@angular/common';
-import { AuthService } from '../authService/auth-service';
+import { AuthService } from '../../service/authService/auth-service';
 // import { Auth } from '../auth/auth';
 import { RouterLink } from '@angular/router';
 
@@ -17,8 +17,8 @@ import { RouterLink } from '@angular/router';
 })
 export class HomeComponent {
   protected readonly title = signal('angular-app');
-  private dogService = inject(DogService);
-  private authService = inject(AuthService);
+  private readonly dogService = inject(DogService);
+  private readonly authService = inject(AuthService);
   dogImages = signal<string[]>([]);
 
   loadDogImages(): void {

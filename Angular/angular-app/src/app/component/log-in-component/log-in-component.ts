@@ -3,12 +3,11 @@ import { Router } from '@angular/router';
 import { MatAnchor } from '@angular/material/button';
 
 @Component({
-  selector: 'app-not-found-component',
+  selector: 'app-log-in-component',
   imports: [MatAnchor],
-  templateUrl: './not-found-component.html',
-  styleUrl: './not-found-component.css',
+  templateUrl: './log-in-component.html',
 })
-export class NotFoundComponent {
+export class LogInComponent {
   constructor(private router: Router) {}
 
   goHome() {

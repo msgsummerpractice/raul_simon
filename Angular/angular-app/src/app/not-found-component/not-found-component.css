@@ -1,0 +1,36 @@
+body {
+  color: #00ffff;
+  background-color: #696969;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+h1 {
+  color: #00ffff;
+  text-align: center;
+  margin-bottom: 1rem;
+  font-size: 3rem;
+  padding: 3rem;
+}
+
+p {
+  color: #00ffff;
+  text-align: center;
+  font-size: 1.5rem;
+}
+
+button {
+  color: #00ffff;
+  background-color: black;
+  padding: 1rem 2rem;
+  align-items: center;
+  align-self: center;
+}
+
+.home-button {
+  display: flex;
+  justify-content: center;
+  margin-top: 2rem;
+  padding: 3rem 6rem;
+}

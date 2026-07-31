@@ -23,6 +23,7 @@ import { DogPipe } from '../dog-pipe';
     DogPipe,
   ],
   templateUrl: './home-component.html',
+  styleUrl: './home-component.css',
 })
 export class HomeComponent {
   protected readonly title = signal('angular-app');

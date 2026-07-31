@@ -38,6 +38,7 @@ type LoginForm = {
   selector: 'app-log-in-component',
   imports: [ReactiveFormsModule, MatAnchor],
   templateUrl: './log-in-component.html',
+  styleUrl: './log-in-component.css',
 })
 export class LogInComponent {
   private readonly _formBuilder = inject(NonNullableFormBuilder);

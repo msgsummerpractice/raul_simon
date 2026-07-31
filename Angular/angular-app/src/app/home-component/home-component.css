@@ -1,0 +1,24 @@
+body {
+  color: #00ffff;
+  background-color: #696969;
+}
+
+h1,
+h2 {
+  font-size: 3rem;
+  color: #00ffff;
+}
+
+button {
+  color: #00ffff;
+  background-color: black;
+}
+
+.login-message {
+  font-size: 1rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 2rem;
+  padding: 3rem 6rem;
+}

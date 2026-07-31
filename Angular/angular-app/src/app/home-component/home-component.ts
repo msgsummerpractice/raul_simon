@@ -7,12 +7,21 @@ import { DogService } from '../dogService';
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../authService/auth-service';
 import { Auth } from '../auth/auth';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
+import { DogPipe } from '../dog-pipe';
 
 @Component({
   selector: 'app-home-component',
   standalone: true,
-  imports: [MatToolbarModule, MatButtonModule, MatIconModule, CommonModule, RouterLink, Auth],
+  imports: [
+    MatToolbarModule,
+    MatButtonModule,
+    MatIconModule,
+    CommonModule,
+    RouterLink,
+    Auth,
+    DogPipe,
+  ],
   templateUrl: './home-component.html',
 })
 export class HomeComponent {
@@ -20,6 +29,7 @@ export class HomeComponent {
   private dogService = inject(DogService);
   private authService = inject(AuthService);
   dogImages = signal<string[]>([]);
+  private router = inject(Router);
 
   loadDogImages(): void {
     const requests = [
@@ -43,6 +53,7 @@ export class HomeComponent {
 
   logout(): void {
     this.authService.logout();
+    this.router.navigate(['/login']);
   }
 
   isAuthenticated(): boolean {

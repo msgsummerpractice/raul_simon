@@ -1,0 +1,10 @@
+import { Pipe, PipeTransform } from '@angular/core';
+
+@Pipe({
+  name: 'dogPipe',
+})
+export class DogPipe implements PipeTransform {
+  transform(value: string, times: number): string {
+    return value.repeat(times);
+  }
+}

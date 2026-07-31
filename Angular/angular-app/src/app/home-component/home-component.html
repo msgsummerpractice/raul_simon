@@ -47,7 +47,7 @@
       @for (image of dogImages(); track $index) {
         <div class="bg-teal-400 rounded-lg shadow p-6 shadow-md">
           <img [src]="image" alt="Dog" class="w-full h-64 object-cover rounded" />
-          <p class="text-gray-600 text-sm mt-2">A very cute dog.</p>
+          <p class="text-gray-600 text-sm mt-2">A very cute dog. {{ 'cute! ' | dogPipe: 3 }}</p>
         </div>
       }
     </div>

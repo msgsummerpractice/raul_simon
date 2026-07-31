@@ -3,10 +3,17 @@ import { HomeComponent } from './component/home-component/home-component';
 import { NotFoundComponent } from './component/not-found-component/not-found-component';
 import { App } from './app';
 import { bootstrapApplication } from '@angular/platform-browser';
+import { authGuard } from './auth/auth-guard';
+import { confirmExitGuard } from './auth/confirm-exit-guard';
 
 export const routes: Routes = [
+  {
+    path: 'home',
+    component: HomeComponent,
+    canActivate: [authGuard],
+    canDeactivate: [confirmExitGuard],
+  },
   { path: '', redirectTo: 'home', pathMatch: 'full' },
-  { path: 'home', component: HomeComponent },
   {
     path: 'login',
     loadComponent: () =>

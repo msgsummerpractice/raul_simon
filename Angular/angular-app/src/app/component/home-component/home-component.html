@@ -11,17 +11,17 @@
       </div> -->
 
       <div class="flex items-center gap-2 sm:gap-4 ml-4">
-        <a rounterLink="/">
+        <a routerLink="/">
           <button mat-icon-button>
             <mat-icon class="transform scale-75 md:scale-100 transition-transform">home</mat-icon>
           </button>
         </a>
         <a>
-          <button mat-icon-button routerLink="/login">
+          <button mat-icon-button routerLink="/login" [disabled]="isAuthenticated()">
             <mat-icon class="transform scale-75 md:scale-100 transition-transform">login</mat-icon>
           </button>
         </a>
-        <a rounterLink="logout">
+        <a>
           <button mat-icon-button (click)="logout()">
             <mat-icon class="transform scale-75 md:scale-100 transition-transform">logout</mat-icon>
           </button>
@@ -37,21 +37,19 @@
     </mat-toolbar>
   </header>
 
-  <h1 class="text-teal-400 text-center text-3xl font-bold text-gray-900 p-2">Dog Gallery</h1>
-  <p class="text-teal-400 text-sm text-center p-1 text-black-500">
-    This gallery showcases three dog breed cards
-  </p>
+  <h1 class="text-center text-3xl font-bold text-gray-900 p-2">Dog Gallery</h1>
+  <p class="text-sm text-center p-1 text-black-500">This gallery showcases three dog breed cards</p>
 
   <div class="max-w-6xl mx-auto p-6">
     <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 p-6">
       @for (image of dogImages(); track $index) {
-        <div class="bg-teal-400 rounded-lg shadow p-6 shadow-md">
+        <div class="bg-cyan-300 rounded-lg shadow p-6 shadow-md">
           <img [src]="image" alt="Dog" class="w-full h-64 object-cover rounded" />
-          <p class="text-gray-600 text-sm mt-2">A very cute dog.</p>
+          <p class="text-gray-600 text-sm mt-2">A very cute dog. {{ 'cute!' | dogPipe: 3 }}</p>
         </div>
       }
     </div>
-    <button mat-raised-button color="primary" class="shadow-lg" (click)="loadDogImages()">
+    <button mat-button class="shadow hover:shadow-lg" (click)="loadDogImages()">
       Fetch Dog Images
     </button>
 
@@ -88,5 +86,5 @@
       />
     </div> -->
   </div>
-  <!-- <div *appAuth><p>I am logged in!</p></div> -->
+  <div class="login-message" *appAuth><p>I am logged in!</p></div>
 </body>

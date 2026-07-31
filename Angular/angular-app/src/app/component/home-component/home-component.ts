@@ -5,21 +5,32 @@ import { MatIconModule } from '@angular/material/icon';
 import { forkJoin } from 'rxjs';
 import { DogService } from '../../service/dogService';
 import { CommonModule } from '@angular/common';
+import { Router, RouterLink } from '@angular/router';
+import { DogPipe } from '../../pipe/dog-pipe';
 import { AuthService } from '../../service/authService/auth-service';
-// import { Auth } from '../auth/auth';
-import { RouterLink } from '@angular/router';
+import { Auth } from '../../auth/auth';
 
 @Component({
   selector: 'app-home-component',
   standalone: true,
-  imports: [MatToolbarModule, MatButtonModule, MatIconModule, CommonModule, RouterLink],
+  imports: [
+    MatToolbarModule,
+    MatButtonModule,
+    MatIconModule,
+    CommonModule,
+    RouterLink,
+    Auth,
+    DogPipe,
+  ],
   templateUrl: './home-component.html',
+  styleUrl: './home-component.css',
 })
 export class HomeComponent {
   protected readonly title = signal('angular-app');
   private readonly dogService = inject(DogService);
   private readonly authService = inject(AuthService);
-  dogImages = signal<string[]>([]);
+  readonly dogImages = signal<string[]>([]);
+  private readonly router = inject(Router);
 
   loadDogImages(): void {
     const requests = [
@@ -43,5 +54,10 @@ export class HomeComponent {
 
   logout(): void {
     this.authService.logout();
+    this.router.navigate(['/login']);
+  }
+
+  isAuthenticated(): boolean {
+    return this.authService.isAuthentificated();
   }
 }

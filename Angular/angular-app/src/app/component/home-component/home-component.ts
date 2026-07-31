@@ -48,16 +48,12 @@ export class HomeComponent {
     });
   }
 
-  login(): void {
-    this.authService.login();
-  }
-
   logout(): void {
     this.authService.logout();
     this.router.navigate(['/login']);
   }
 
   isAuthenticated(): boolean {
-    return this.authService.isAuthentificated();
+    return this.authService.isAuthenticated();
   }
 }

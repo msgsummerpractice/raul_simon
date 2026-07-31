@@ -11,7 +11,7 @@ export class Auth {
 
   constructor() {
     effect(() => {
-      if (this.authService.isAuthentificated()) {
+      if (this.authService.isAuthenticated()) {
         this.viewContainer.createEmbeddedView(this.templateRef);
       } else {
         this.viewContainer.clear();

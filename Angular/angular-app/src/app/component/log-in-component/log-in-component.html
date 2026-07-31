@@ -8,15 +8,15 @@
         [formGroup]="loginFormGroup"
         (ngSubmit)="onFormSubmit()"
       >
-        @if (loginFormGroup.controls.email.invalid) {
-          <small class="text-error">Email is required.</small>
+        @if (loginFormGroup.controls.username.invalid) {
+          <small class="text-error">Username is required.</small>
         }
-        <label for="email" class="text-black">Email: </label>
+        <label for="username" class="text-black">Username: </label>
         <input
           type="text"
-          id="email"
+          id="username"
           class="border border-white rounded p-2 bg-black text-white"
-          formControlName="email"
+          formControlName="username"
         />
 
         @if (loginFormGroup.controls.password.invalid) {
@@ -29,16 +29,37 @@
           class="border border-white rounded p-2 bg-black text-white"
           formControlName="password"
         />
+        @if (isSubmited()) {
+          <label for="mfaCode" class="text-black">MFA Code: </label
+          ><input
+            type="text"
+            id="mfaCode"
+            class="border border-white rounded p-2 bg-black text-white"
+            #mfaCode
+          />
 
-        <button
-          mat-button
-          color="primary"
-          type="submit"
-          [disabled]="!loginFormGroup.valid"
-          class="w-full mt-2 shadow hover:shadow-lg"
-        >
-          Submit
-        </button>
+          <button
+            mat-button
+            color="primary"
+            type="button"
+            class="w-full mt-2 shadow hover:shadow-lg"
+            (click)="verifyMfa(mfaCode.value)"
+          >
+            Submit Mfa
+          </button>
+        }
+
+        @if (!isSubmited()) {
+          <button
+            mat-button
+            color="primary"
+            type="submit"
+            [disabled]="!loginFormGroup.valid"
+            class="w-full mt-2 shadow hover:shadow-lg"
+          >
+            Submit
+          </button>
+        }
       </form>
     </div>
   </div>

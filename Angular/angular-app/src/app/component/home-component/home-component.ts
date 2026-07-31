@@ -6,7 +6,7 @@ import { forkJoin } from 'rxjs';
 import { DogService } from '../../service/dogService';
 import { CommonModule } from '@angular/common';
 import { Router, RouterLink } from '@angular/router';
-import { DogPipe } from '../../dog-pipe';
+import { DogPipe } from '../../pipe/dog-pipe';
 import { AuthService } from '../../service/authService/auth-service';
 import { Auth } from '../../auth/auth';
 
@@ -29,8 +29,8 @@ export class HomeComponent {
   protected readonly title = signal('angular-app');
   private readonly dogService = inject(DogService);
   private readonly authService = inject(AuthService);
-  dogImages = signal<string[]>([]);
-  private router = inject(Router);
+  readonly dogImages = signal<string[]>([]);
+  private readonly router = inject(Router);
 
   loadDogImages(): void {
     const requests = [

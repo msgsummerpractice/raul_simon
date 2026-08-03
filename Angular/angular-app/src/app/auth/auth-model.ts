@@ -1,26 +1,26 @@
-export interface AuthResponse {
+export type AuthResponse = {
   accessToken: string;
   username: string;
   roles: string[];
-}
+};
 
-export interface User {
+export type User = {
   username: string;
   roles: string[];
-}
+};
 
-export interface MfaRequest {
+export type MfaRequest = {
   username: string;
   mfaCode: string;
-}
+};
 
-export interface LoginRequest {
+export type LoginRequest = {
   username: string;
   password: string;
-}
+};
 
-export interface JwtPayload {
+export type JwtPayload = {
   sub: string;
   roles: string[];
   exp: number;
-}
+};

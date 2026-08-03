@@ -7,8 +7,8 @@ import { jwtDecode } from 'jwt-decode';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
-  private http = inject(HttpClient);
-  private router = inject(Router);
+  private readonly http = inject(HttpClient);
+  private readonly router = inject(Router);
   private currentUser = signal<User | null>(null);
   user = this.currentUser.asReadonly();
   private apiUrl = 'http://localhost:8080/api/auth';

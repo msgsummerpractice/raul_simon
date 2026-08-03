@@ -42,11 +42,11 @@ type LoginForm = {
 })
 export class LogInComponent {
   private readonly _formBuilder = inject(NonNullableFormBuilder);
-  private authService = inject(AuthService);
-  private router = inject(Router);
+  private readonly authService = inject(AuthService);
+  private readonly router = inject(Router);
   protected readonly isSubmited = signal<boolean>(false);
-  private usrnameForMfa = '';
-  protected loginError = '';
+  private readonly usrnameForMfa = signal('');
+  protected readonly loginError = signal('');
 
   protected readonly loginFormGroup = this._formBuilder.group<LoginForm>({
     username: this._formBuilder.control('', Validators.required),
@@ -54,7 +54,7 @@ export class LogInComponent {
   });
 
   onFormSubmit(): void {
-    this.loginError = '';
+    this.loginError.set('');
     if (this.loginFormGroup.invalid) {
       this.loginFormGroup.markAllAsTouched();
       return;
@@ -64,15 +64,15 @@ export class LogInComponent {
 
     this.authService.login(username, password).subscribe({
       next: () => {
-        this.usrnameForMfa = username;
+        this.usrnameForMfa.set(username);
         this.isSubmited.set(true);
       },
       error: (err) => {
         this.isSubmited.set(false);
         if (err.status === 401) {
-          this.loginError = 'Invalid username or password.';
+          this.loginError.set('Invalid username or password.');
         } else {
-          this.loginError = 'Something went wrong. Please try again.';
+          this.loginError.set('Something went wrong. Please try again.');
         }
       },
     });
@@ -95,7 +95,7 @@ export class LogInComponent {
   }
 
   verifyMfa(code: string): void {
-    this.authService.verifyMfa(this.usrnameForMfa, code).subscribe({
+    this.authService.verifyMfa(this.usrnameForMfa(), code).subscribe({
       next: (response) => {
         this.authService.saveToken(response.accessToken);
         this.isSubmited.set(false);

@@ -119,7 +119,7 @@ public class SecurityConfig {
  
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.setAllowedOrigins(
-                List.of("http://localhost:4200"));
+                List.of("http://localhost:4200", "https://victorious-plant-0b0b06203.7.azurestaticapps.net"));
         configuration.setAllowedMethods(
                 List.of(
                         "GET",

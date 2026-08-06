@@ -11,7 +11,8 @@ export class AuthService {
   private readonly router = inject(Router);
   private currentUser = signal<User | null>(null);
   user = this.currentUser.asReadonly();
-  private apiUrl = 'http://localhost:8080/api/auth';
+  private apiUrl =
+    'https://raul-simon.politewave-44646487.germanywestcentral.azurecontainerapps.io';
 
   constructor() {
     this.restoreUser();

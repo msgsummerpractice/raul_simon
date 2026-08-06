@@ -12,7 +12,7 @@ export class AuthService {
   private currentUser = signal<User | null>(null);
   user = this.currentUser.asReadonly();
   private apiUrl =
-    'https://raul-simon.politewave-44646487.germanywestcentral.azurecontainerapps.io';
+    'https://raul-simon.politewave-44646487.germanywestcentral.azurecontainerapps.io/api/auth';
 
   constructor() {
     this.restoreUser();
